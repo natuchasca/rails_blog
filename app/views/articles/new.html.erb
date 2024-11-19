@@ -1,21 +1,4 @@
+<%= link_to "Volver", :back %>
 <h1>Nuevo Artículo</h1>
 
-<%= form_with model: @article do |form| %>
-  <div>
-    <%= form.label :title %>
-    <%= form.text_field :title %>
-    <% @article.errors.full_messages_for(:title).each do |message| %>
-      <p style="color: red;"><%= message %></p>
-    <% end %>
-  </div>
-  <br/>
-  <div>
-    <%= form.label :body %>
-    <%= form.text_area :body %>
-    <% @article.errors.full_messages_for(:body).each do |message| %>
-      <p style="color: red;"><%= message %></p>
-    <% end %>
-  </div>
-  <br/>
-  <%= form.submit %>
-<% end %>
+<%= render "form", article: @article %>
