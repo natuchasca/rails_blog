@@ -1,0 +1,12 @@
+<h2>Comentarios</h2>
+<ul>
+  <% if article.comments.length > 0 %>
+    <% article.comments.each do |comment| %>
+      <li>
+        <p><strong><%= comment.commenter %>:</strong> <%= comment.body %></p>
+      </li>
+    <% end %>
+  <% else %>
+    <p>Sin Comentarios</p>
+  <% end %>
+</ul>
