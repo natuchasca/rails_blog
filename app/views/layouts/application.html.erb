@@ -25,18 +25,39 @@
   </head>
 
   <body>
-    <nav class="navbar">
-      <% if user_signed_in? %>
-
-      <% else %>
-
-      <% end %>
-    </nav>
+    <header>
+      <nav class="navbar">
+        <% if user_signed_in? %>
+          <!-- Mostrar correo y botón de cerrar sesión -->
+          <span><strong>BLOG</strong> | Bienvenido, <%= current_user.email %></span>
+          <div>
+            <%= link_to "Artículos", articles_path, class: "nav-link" %>
+            <%= link_to "Crear Artículo", new_article_path, class: "nav-link" %>
+          </div>
+          <%= button_to "Cerrar sesión", destroy_user_session_path, method: :delete, class: "btn btn-logout" %>
+        <% else %>
+          <strong>BLOG</strong>
+          <div>
+            <%= link_to "Artículos", articles_path, class: "nav-link" %>
+          </div>
+          <!-- Mostrar botón de iniciar sesión -->
+          <div>
+            <%= link_to "Iniciar sesión", new_user_session_path, class: "btn btn-login" %>
+            <%= link_to "Crear Usuario", new_user_registration_path, class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </nav>
+    </header>
     <main>
-      <div>
-        <%= notice %>
-        <%= alert %>
-      </div>
+      <% if flash.any? %>
+        <div class="flash-messages">
+          <% flash.each do |key, message| %>
+            <div class="alert <%= key %>">
+              <%= message %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
       <%= yield %>
     </main>
   </body>

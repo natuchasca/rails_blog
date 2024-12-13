@@ -1,25 +1,23 @@
 <%= link_to "<- Listado de Articulos", articles_path %>
 
-<section>
-  <h1><%= @article.title %></h1>
-  <p><%= @article.body %></p>
+<article>
+  <section>
+    <%= render @article %>
+  </section>
 
+
+  <h2>Comentarios</h2>
   <% if user_signed_in? %>
-    <ul>
-      <li><%= link_to "Editar", edit_article_path(@article) %></li>
-      <li><%= link_to "Eliminar", article_path(@article), data: {
-        turbo_method: :delete,
-        turbo_confirm: "¿Estás seguro?"
-      } %></li>
-    </ul>
+    <%= render "comments/list", article: @article %>
+    <div class="notice">
+      <%= render "comments/form", article: @article %>
+    </div>
+  <% else %>
+    <div class="notice">
+      <p>Para Comentar en este articulo inicia sesión o crea un usuario.</p>
+      <%= link_to "Iniciar sesión", new_user_session_path, class: "btn btn-primary" %>
+      <%= link_to "Crear Usuario", new_user_registration_path, class: "btn btn-secondary" %>
+    </div>
   <% end %>
-</section>
-
-
-<% if user_signed_in? %>
-  <%= render "comments/list", article: @article %>
-  <div class="notice">
-    <%= render "comments/form", article: @article %>
-  </div>
-<% end %>
+</article>
 
