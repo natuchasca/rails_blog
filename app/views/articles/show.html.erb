@@ -4,18 +4,22 @@
   <h1><%= @article.title %></h1>
   <p><%= @article.body %></p>
 
-  <ul>
-    <li><%= link_to "Editar", edit_article_path(@article) %></li>
-    <li><%= link_to "Eliminar", article_path(@article), data: {
-      turbo_method: :delete,
-      turbo_confirm: "¿Estás seguro?"
-    } %></li>
-  </ul>
+  <% if user_signed_in? %>
+    <ul>
+      <li><%= link_to "Editar", edit_article_path(@article) %></li>
+      <li><%= link_to "Eliminar", article_path(@article), data: {
+        turbo_method: :delete,
+        turbo_confirm: "¿Estás seguro?"
+      } %></li>
+    </ul>
+  <% end %>
 </section>
 
 
-<%= render "comments/list", article: @article %>
-<div class="notice">
-  <%= render "comments/form", article: @article %>
-</div>
+<% if user_signed_in? %>
+  <%= render "comments/list", article: @article %>
+  <div class="notice">
+    <%= render "comments/form", article: @article %>
+  </div>
+<% end %>
 

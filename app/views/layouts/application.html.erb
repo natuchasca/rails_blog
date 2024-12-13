@@ -25,6 +25,19 @@
   </head>
 
   <body>
-    <%= yield %>
+    <nav class="navbar">
+      <% if user_signed_in? %>
+
+      <% else %>
+
+      <% end %>
+    </nav>
+    <main>
+      <div>
+        <%= notice %>
+        <%= alert %>
+      </div>
+      <%= yield %>
+    </main>
   </body>
 </html>
