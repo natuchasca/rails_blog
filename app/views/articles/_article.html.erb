@@ -5,17 +5,19 @@
 <% else %>
   <h1><%= article.title %></h1>
 <% end %>
+<small>Publicado: <%= article.created_at.strftime("%d/%m/%Y") %></small>
 <p><%= article.body %></p>
 
-<% if user_signed_in? %>
-  <div class="button-group">
-    <% if action_name === "index" %>
-      <%= link_to "Ver", article, class: "btn btn-secondary" %>
-    <% end %>
+
+<div class="button-group">
+  <% if action_name === "index" %>
+    <%= link_to "Ver", article, class: "btn btn-secondary" %>
+  <% end %>
+  <% if user_signed_in? %>
     <%= link_to "Editar", edit_article_path(article), class: "btn btn-primary" %>
     <%= link_to "Eliminar", article_path(article), data: {
       turbo_method: :delete,
       turbo_confirm: "¿Estás seguro?"
     }, class: "btn btn-danger" %>
-  </div>
-<% end %>
+  <% end %>
+</div>
