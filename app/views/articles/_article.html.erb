@@ -1,23 +1,27 @@
-<% if action_name === "index" %>
-  <h2>
-    <%= link_to article.title, article %>
-  </h2>
-<% else %>
-  <h1><%= article.title %></h1>
-<% end %>
-<small>Publicado: <%= article.created_at.strftime("%d/%m/%Y") %></small>
-<p><%= article.body %></p>
-
-
-<div class="button-group">
+<div id="<%= dom_id article %>">
   <% if action_name === "index" %>
-    <%= link_to "Ver", article, class: "btn btn-secondary" %>
+    <h2>
+      <%= link_to article.title, article %>
+    </h2>
+  <% else %>
+    <h1><%= article.title %></h1>
   <% end %>
-  <% if user_signed_in? %>
-    <%= link_to "Editar", edit_article_path(article), class: "btn btn-primary" %>
-    <%= link_to "Eliminar", article_path(article), data: {
-      turbo_method: :delete,
-      turbo_confirm: "¿Estás seguro?"
-    }, class: "btn btn-danger" %>
-  <% end %>
+  <small>
+    <strong>Publicado por:</strong> <%= article&.user&.email || "anonimo" %> el <%= article.created_at.strftime("%d/%m/%Y") %>
+  </small>
+  <p><%= article.body %></p>
+
+
+  <div class="button-group">
+    <% if action_name === "index" %>
+      <%= link_to "Ver", article, class: "btn btn-secondary" %>
+    <% end %>
+    <% if user_signed_in? %>
+      <%= link_to "Editar", edit_article_path(article), class: "btn btn-primary" %>
+      <%= link_to "Eliminar", article_path(article), data: {
+        turbo_method: :delete,
+        turbo_confirm: "¿Estás seguro?"
+      }, class: "btn btn-danger" %>
+    <% end %>
+  </div>
 </div>

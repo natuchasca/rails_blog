@@ -6,4 +6,5 @@ class User < ApplicationRecord
          :confirmable, :lockable, :timeoutable, :trackable
 
   has_many :comments, inverse_of: :user
+  has_many :articles, inverse_of: :user
 end

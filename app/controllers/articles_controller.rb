@@ -14,11 +14,16 @@ class ArticlesController < ApplicationController
   end
 
   def create
-    @article = Article.new(articles_params)
-    if @article.save
-      redirect_to @article
-    else
-      render :new, status: :unprocessable_entity
+    @article = Article.new(article_params.merge(user_id: current_user.id))
+
+    respond_to do |format|
+      if @article.save
+        format.html { redirect_to @article, notice: "Article was successfully created." }
+        format.json { render :show, status: :created, location: @article }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @article.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -28,7 +33,7 @@ class ArticlesController < ApplicationController
 
   def update
     @article = Article.find(params[:id])
-    if @article.update(articles_params)
+    if @article.update(article_params)
       redirect_to @article
     else
       render :edit, status: :unprocessable_entity
@@ -44,7 +49,7 @@ class ArticlesController < ApplicationController
 
   private
 
-  def articles_params
+  def article_params
     params.require(:article).permit(:title, :body)
   end
 end
