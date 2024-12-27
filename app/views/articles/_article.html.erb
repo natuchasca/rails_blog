@@ -1,4 +1,7 @@
-<div id="<%= dom_id article %>">
+<div id="<%= dom_id article %>" class="article-container">
+  <div class="status-label <%= article.draft? ? 'status-draft' : 'status-published' %>">
+    <%= article.draft? ? '📝 Borrador' : '✅ Publicado' %>
+  </div>
   <% if action_name === "index" %>
     <h2>
       <%= link_to article.title, article %>
@@ -12,16 +15,33 @@
   <p><%= article.body %></p>
 
 
-  <div class="button-group">
-    <% if action_name === "index" %>
-      <%= link_to "Ver", article, class: "btn btn-secondary" %>
-    <% end %>
-    <% if user_signed_in? %>
-      <%= link_to "Editar", edit_article_path(article), class: "btn btn-primary" %>
-      <%= link_to "Eliminar", article_path(article), data: {
+<div class="button-group">
+  <% if action_name === "index" %>
+    <%= button_to "Ver", article_path(article), method: :get, class: "btn btn-secondary" %>
+  <% end %>
+  <% if user_signed_in? %>
+    <% if article.user == current_user %>
+      <!-- Solo el creador puede ver estos botones en su color normal -->
+      <%= button_to "Editar", edit_article_path(article), method: :get, class: "btn btn-primary" %>
+      <%= button_to "Eliminar", article_path(article), data: {
         turbo_method: :delete,
         turbo_confirm: "¿Estás seguro?"
       }, class: "btn btn-danger" %>
+      <% if article.publication_state == 'draft' %>
+        <%= button_to "Publicar", publish_article_path(article), method: :patch, class: "btn btn-success" %>
+      <% else %>
+        <%= button_to "Despublicar", unpublish_article_path(article), method: :patch, class: "btn btn-warning" %>
+      <% end %>
+    <% else %>
+      <!-- Los botones de editar y destruir se vuelven grises si el usuario no es el creador -->
+      <%= button_to "Editar", edit_article_path(article), method: :get, class: "btn btn-disabled" %>
+      <%= button_to "Eliminar", article, method: :delete, class: "btn btn-disabled" %>
+      <% if article.publication_state == 'draft' %>
+        <%= button_to "Publicar", publish_article_path(article), method: :patch, class: "btn btn-disabled" %>
+      <% else %>
+        <%= button_to "Despublicar", unpublish_article_path(article), method: :patch, class: "btn btn-disabled" %>
+      <% end %>
     <% end %>
-  </div>
+  <% end %>
 </div>
+

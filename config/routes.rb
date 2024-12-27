@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   root to: "articles#index"
   
   resources :articles do
+    member do
+      patch :publish
+      patch :unpublish
+    end
     resources :comments
   end
 
