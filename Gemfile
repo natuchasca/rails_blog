@@ -66,3 +66,6 @@ gem 'devise'
 
 gem 'pundit'
 
+
+gem "mission_control-jobs", "~> 1.0"
+
